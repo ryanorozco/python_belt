@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<meta charset="UTF-8">
+		<title>POKE ON POKES</title>
+		<style>
+			body {
+				font-family: Helvetica;
+			}
+
+			header {
+				display: block;
+				height: 50px;
+				border: .5px solid black;
+				border-bottom-left-radius: 10px;
+				border-bottom-right-radius: 10px;
+				font-family: Helvetica;
+				background: blue;
+				color: white;
+			}
+
+			h3#welcome {
+				text-align: left;
+				margin: 10px 0 0 20px;
+				display: inline-block;
+				font-family: Helvetica;
+			}
+
+			form input {
+				font-family: Helvetica;
+			}
+
+			#logout {
+				text-align: right;
+				margin-right: 10px;
+				margin-top: 10px;
+			}
+
+			#logoutButton {
+				background: linear-gradient(red, white);
+				border-radius: 8px;
+				border: 1px solid grey;
+			}
+			thead{
+
+				font-size: 150%;
+
+			}
+			table{
+				margin-top: 10px;
+
+			}
+			th{
+				margin: 5px;
+				padding: 20px;
+			}
+			.scrollable{
+				margin-left: 15px;
+				height: 200px;
+				width: 400px;
+				overflow-y: scroll;
+			}
+			body{
+				margin: 10px;
+			}
+
+		</style>
+	</head>
+	<header>
+		<h3 id='welcome'>Welcome, {{ session['currentUser']['alias'] }}</h3>
+	</header>
+	<body>
+		<form id='logout' action='/logout' method='GET'>
+			<input id='logoutButton' type='submit' name='logout' value='Log Out'>
+		</form>
+		<h3>You have been poked {{ session['currentUser']['poke_history']}} times!</h3><br /><br />
+		<div class="scrollable">
+			<div>
+				{% for poker in pokedByArray %}
+
+					{% if not poker['poker_alias'] %}
+						"YOU DONT HAVE ANY POKES, YOU ARE S.O.L.!"
+					{% else %}
+						{{ poker['poker_alias'] }} poked you {{poker['count(pokey_id)']}} time(s)!<br />
+					{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+
+		<h4>People you may want to POKE!</h4>
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Alias</th>
+					<th>Email</th>
+					<th>Poke History</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for user in pokeableArray %}
+				<form action="/pokeEm/{{ user['id'] }}" method="POST">
+					<tr>
+						<th>{{ user['name'] }}</th>
+						<th> {{ user['alias'] }} </th>
+						<th>{{ user['email'] }}</th>
+						<th> {{ user['poke_history'] }} </th>
+						<th>
+							<input type="hidden" name="pokeyId" value="{{ session['currentUser']['id'] }}" />
+							<input type='hidden' name='usersId' value="{{ user['id'] }}">
+							<input type="submit" value="POKE!" /></th>
+						</tr>
+				</form>
+				{% endfor %}
+
+
+			</tbody>
+		</table>
+	</body>
+</html>

@@ -1,8 +1,90 @@
-<html>
-  <head>
-    <link rel="stylesheet" href="/static/css/styles.css" type="text/css">
-  </head>
-  <body>
-    The best place to start is the "WelcomeController.py" file in app/controllers.
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Login/Registration</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <style>
+  #wrapper{
+  	text-align: center;
+  }
+  .container{
+    width: 375px;
+    display: inline-block;
+    vertical-align: top;
+    border-style: dashed;
+    padding: 10px;
+    margin: 10px;
+  }
+  input{
+    margin: 2px;
+  }
+  .errors{
+    color: red;
+    font-size: 120%;
+  }
+  .success{
+    color: green;
+    font-size: 150%;
+  }
+  </style>
+</head>
+<body>
+	<div id='wrapper'>
+  	<h2>Gotta Poke em' all!</h2>
+  	<div class="container">
+        <form action='/register' method='POST' class="form-signin">
+          <h3 class="form-signin-heading">Register Here</h3>
+          <label for="inputEmail" class="sr-only">Email address</label>
+          <input name='email' type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+          <label for="inputName" class="sr-only">Name</label>
+          <input name='name' type="text" id="inputName" class="form-control" placeholder="Name" required autofocus>
+          <label for="inputAlias" class="sr-only">Alias</label>
+          <input name='alias' type="text" id="inputName" class="form-control" placeholder="Alias" required autofocus>
+          <label for="inputPassword" class="sr-only">Password</label>
+          <input name='password' type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+          <p>*Password should be at least 8 characters.</p>
+          <label for="inputPassword" class="sr-only">Confirm password</label>
+          <input name='confirm_password' type="password" id="inputPassword" class="form-control" placeholder="Confirm password" required>
+          <p>Date of Birth:</p>
+          <input name='dob' id='inputDate' type='date' class='form-control' placeholder="Date of Birth" max="2016-07-25"required><br />
+          <input type='submit' class="btn btn-lg btn-primary btn-block" value='Register'>
+        </form>
+        {% with errors = get_flashed_messages(category_filter=["regerror"]) %}
+          {% if errors %}
+              {%- for msg in errors %}
+                <p class="errors">{{ msg }}</p>
+              {% endfor -%}
+          {% endif %}
+        {% endwith %}
+        {% with errors = get_flashed_messages(category_filter=["success"]) %}
+          {% if errors %}
+              {%- for msg in errors %}
+                <p class="success">{{ msg }}</p>
+              {% endfor -%}
+          {% endif %}
+        {% endwith %}
+      </div>
+      <div class="container">
+        <form action='/login' method='POST' class="form-signin">
+          <h3 class="form-signin-heading">Log in Here</h3>
+          <label for="inputEmail" class="sr-only">Email address</label>
+          <input name='email' type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+          <label for="inputPassword" class="sr-only">Password</label>
+          <input name='password' type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+          <input type='submit' class="btn btn-lg btn-primary btn-block" value='Log in'>
+        </form>
+        {% with errors = get_flashed_messages(category_filter=["logerror"]) %}
+          {% if errors %}
+              {%- for msg in errors %}
+                <p>{{ msg }}</p>
+              {% endfor -%}
+          {% endif %}
+        {% endwith %}
+      </div>
+    </div>
+</body>
 </html>
